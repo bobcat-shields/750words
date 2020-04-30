@@ -1,0 +1,66 @@
+@model _750words.Models.User
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+    </dl>
+</div>
+
+<div class="Entries">
+    @*This is the HTML which shows the grid and WORKS:*@
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+    @foreach (var entry in Model.Entries)
+    {
+        @entry.WordCount
+        <p>@entry.PostedOn</p>
+    }
+
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title:{
+		text: "Words Over Time"
+	},
+	axisY:{
+		includeZero: false
+	},
+	data: [{        
+		type: "line",
+      	indexLabelFontSize: 16,
+		dataPoints: [
+            @foreach (var entry in Model.Entries)
+            {
+                <text>{ y: @entry.WordCount },</text>
+            }
+		]
+	}]
+});
+chart.render();
+
+}
+</script>
