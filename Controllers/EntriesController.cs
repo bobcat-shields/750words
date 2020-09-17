@@ -33,6 +33,7 @@ namespace _750words.Controllers
             }
 
             var entry = await _context.Entries
+                .Include(e => e.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (entry == null)
             {
